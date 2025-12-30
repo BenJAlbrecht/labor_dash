@@ -1,16 +1,8 @@
-# This is a sample Python script.
+import pandas as pd
+from load_BLS.load_bls import read_bls
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Testing
+url = "https://download.bls.gov/pub/time.series/la/la.data.1.CurrentS"
+df = read_bls(url)
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(df.head(5))
