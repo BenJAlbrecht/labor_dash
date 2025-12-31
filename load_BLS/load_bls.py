@@ -8,8 +8,10 @@ from io import StringIO
 
 def read_bls(url):
     """
-    :param url: (str) for the BLS flatfile
-    :return: pandas dataframe
+    :param:
+        url -- (str) for the BLS flatfile
+    :return:
+        pandas dataframe
     """
     headers = {
         "User-Agent": (
@@ -29,14 +31,15 @@ def read_bls(url):
     df = pd.read_csv(StringIO(response.text), sep = '\t', dtype = str)
 
     # Clean DF
-    df = df.dropna(axis = 1, how = 'all') # Remove completely empty columns
-    df.columns = df.columns.str.strip() # Trim whitespace from column names
+    df.columns = df.columns.str.strip()
+    df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
+    df = df.dropna(axis=1, how="all")
 
     return df
 
 
 """
-Function to load national LAUS data
+Function to load state LAUS data
 """
 def get_laus():
     # Time series of the LAUS data
@@ -92,3 +95,51 @@ def get_laus():
     )
 
     return laus_df
+
+
+"""
+Function to get national CPS
+Future: Add arguments to pull demographic data
+"""
+def get_national_cps():
+    # Data dictionary
+    cps_data = {
+        "data": "https://download.bls.gov/pub/time.series/ln/ln.data.1.AllData"
+    }
+
+    # Meta data
+    cps_meta_data = {
+        "series": "https://download.bls.gov/pub/time.series/ln/ln.series"
+    }
+
+    # Get data
+    cps_data_df = (
+        read_bls(cps_data["data"])
+        .drop("footnote_codes", axis = 1)
+    )
+
+    # Get metadata
+    cps_series = read_bls(cps_meta_data["series"])
+
+    # Join metadata onto cps data
+    cps_df = (
+        cps_data_df
+        .merge(cps_series, on = "series_id", how = "left")
+    )
+
+    # Remove quarterly data
+    cps_df = cps_df.loc[cps_df['periodicity_code'] != 'Q']
+
+    # Create date column
+    cps_df['date'] = pd.to_datetime(
+        cps_df['year'].astype(str)
+        + '-'
+        + cps_df['month'].str[1:]
+        + '-01'
+    )
+
+    # Relocate date to front
+    col = cps_df.pop('date')
+    cps_df.insert(0, 'date', col)
+
+    return cps_df
