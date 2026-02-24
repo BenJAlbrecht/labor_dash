@@ -9,5 +9,6 @@ description = "Load and process U.S. Bureau of Labor Statistics flat files"
 requires-python = ">=3.10"
 dependencies = [
     "pandas",
+    "plotly",
     "requests",
 ]

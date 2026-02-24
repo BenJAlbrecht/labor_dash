@@ -1,0 +1,7 @@
+In the main directory for this project: C:\Users\balbrecht\labor_dash you will find a Jupyter Source File called test. In this notebook, on the fourth chunk down you will find an extensive amount of code creating a basic line figure plotting the US unemployment rate over time. Please also note that the second chunk of code in this notebook contains the bls.time_series.get_unrate() call from our load_bls library to get the unemployment rate data from the BLS website. 
+
+I want you to begin the steps to create a web-based dashboard using plotly. The fourth chunk will be our working draft. Currently we have a singular goal of making this an HTML object and then hosting it on a website.
+
+To be clear, I am not sure how this process is done (creating an HTML object, if that is even the correct language) and then hosting it on a website. Our only goal is to create some Python code generating that unemployment rate graph and then hosting it on the web. 
+
+Similar to our directory organization efforts, I want you to think of how to organize Python files for this project. Once you have a suggestion for how to do this also append it to the Claude.md base instructions of this project so we can use that going forward.
